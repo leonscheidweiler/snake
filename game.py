@@ -1,5 +1,7 @@
 import pygame
 
+import random
+
 class Board:
     width = 0
     height = 0
@@ -21,12 +23,10 @@ class Snake:
 
     def __init__(self, board):
         self.board = board
-        self.scale = board.scale
 
-    def place_snake(self):
+    def place(self):
         self.x_pos = board.width/board.scale//2
         self.y_pos = board.height/board.scale//2
-        self.length = 0
         self.tail = []
         self.x_speed = 0
         self.y_speed = 0
@@ -34,15 +34,15 @@ class Snake:
     def draw(self):
         # head
         pygame.draw.rect(screen, [0, 255, 0],
-                [self.x_pos*self.scale, self.y_pos*self.scale,
-                    self.scale, self.scale], 0)
+                [self.x_pos*board.scale, self.y_pos*board.scale,
+                    board.scale, board.scale], 0)
         # tail
         for element in self.tail:
             pygame.draw.rect(screen, [0, 255, 0],
-                    [element[0]*self.scale, element[1]*self.scale,
-                        self.scale, self.scale], 0)
+                    [element[0]*board.scale, element[1]*board.scale,
+                        board.scale, board.scale], 0)
 
-    def check_collision(self):
+    def collided(self):
         border_collision = self.x_pos >= board.width//board.scale\
                 or self.x_pos < 0\
                 or self.y_pos >= board.height//board.scale\
@@ -51,19 +51,45 @@ class Snake:
         for element in self.tail:
             if self.x_pos == element[0] or self.y_pos == element[1]:
                 body_collision = True
-        if border_collision or body_collision:
-            self.place_snake()
+        return border_collision or body_collision
 
     def slither(self):
-        self.x_pos += self.x_speed
-        self.y_pos += self.y_speed
         self.tail.append([self.x_pos, self.y_pos])
         self.tail.pop(0)
+        self.x_pos += self.x_speed
+        self.y_pos += self.y_speed
 
+    def devour(self):
+        self.tail.append([self.x_pos, self.y_pos])
+
+class Apple:
+    board = None
+    snake = None
+    x_pos = 0
+    y_pos = 0
+
+    def __init__(self, board, snake):
+        self.board = board
+        self.snake = snake
+
+    def place(self):
+        self.x_pos = random.randint(0, board.width//board.scale-1)
+        self.y_pos = random.randint(0, board.height//board.scale-1)
+
+    def eaten(self):
+        return snake.x_pos == self.x_pos and snake.y_pos == self.y_pos
+
+    def draw(self):
+        pygame.draw.rect(screen, [255, 0, 0],
+                [self.x_pos*board.scale, self.y_pos*board.scale,
+                    board.scale, board.scale], 0)
 
 board = Board(800, 800, 20)
 snake = Snake(board)
-snake.place_snake()
+apple = Apple(board, snake)
+
+snake.place()
+apple.place()
 
 game_running = True
 
@@ -96,12 +122,19 @@ while game_running:
     
     # game loop
     snake.slither()
-    snake.check_collision()
+
+    if apple.eaten():
+        snake.devour()
+        apple.place()
+
+    if snake.collided():
+        snake.place()
 
     # draw loop
     screen.fill([0,0,0])
 
     snake.draw()
+    apple.draw()
 
     pygame.display.flip()
 
