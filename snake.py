@@ -9,6 +9,7 @@ class Snake:
     tail = []
     color = [0, 255, 0]
     screen = None
+    devour_sound = None
 
     def __init__(self, board):
         self.board = board
@@ -39,6 +40,7 @@ class Snake:
 
     def devour(self):
         self.tail.append([self.x_pos, self.y_pos])
+        self.devour_sound.play()
 
     def draw(self):
         # head

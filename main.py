@@ -6,6 +6,10 @@ from snake import *
 from food import *
 
 pygame.init()
+
+pygame.mixer.init()
+devour_sound = pygame.mixer.Sound('sounds/devour.wav')
+
 pygame.display.set_caption('Snake')
 
 clock = pygame.time.Clock()
@@ -16,6 +20,7 @@ food = Food(board, snake)
 
 screen = pygame.display.set_mode([500, 700])
 snake.screen = screen
+snake.devour_sound = devour_sound
 food.screen = screen
 board.screen = screen
 
