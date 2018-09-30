@@ -15,8 +15,8 @@ class Food:
 
     def place(self):
         while True:
-            self.x_pos = random.randint(0, self.board.width//self.board.scale-1)
-            self.y_pos = random.randint(0, self.board.height//self.board.scale-1)
+            self.x_pos = random.randint(0, self.board.width//self.board.scale-1) + self.board.x_pos
+            self.y_pos = random.randint(0, self.board.height//self.board.scale-1) + self.board.y_pos
             for element in self.snake.tail:
                 if element[0]==self.x_pos and element[1]==self.y_pos:
                     continue

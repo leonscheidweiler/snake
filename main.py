@@ -5,24 +5,24 @@ from board import *
 from snake import *
 from food import *
 
-board = Board(0, 0, 600, 800, 20)
+pygame.init()
+pygame.display.set_caption('Snake')
+
+clock = pygame.time.Clock()
+
+board = Board(0, 0, 500, 700, 20)
 snake = Snake(board)
 food = Food(board, snake)
+
+screen = pygame.display.set_mode([500, 700])
+snake.screen = screen
+food.screen = screen
+board.screen = screen
 
 snake.place()
 food.place()
 
 game_running = True
-
-screen = pygame.display.set_mode([board.width, board.height])
-snake.screen = screen
-food.screen = screen
-board.screen = screen
-
-pygame.init()
-pygame.display.set_caption('Snake')
-
-clock = pygame.time.Clock()
 
 while game_running:
 
@@ -60,6 +60,7 @@ while game_running:
     # draw loop
     screen.fill([0,0,0])
 
+    board.draw()
     snake.draw()
     food.draw()
 
