@@ -1,5 +1,3 @@
 # Snake
 
-Just a lil snek eating its way through some food.
-
-Using pygame to make a few simple games.
+I'm currently trying to learn how to make games. For now I made the classic Snake game using pygame. Enjoy.
