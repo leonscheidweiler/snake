@@ -14,13 +14,14 @@ class Food:
         self.snake = snake
 
     def place(self):
-        while True:
-            self.x_pos = random.randint(0, self.board.width//self.board.scale-1) + self.board.x_pos
-            self.y_pos = random.randint(0, self.board.height//self.board.scale-1) + self.board.y_pos
+        valid = False
+        while not valid:
+            valid = True
+            self.x_pos = random.randint(0, self.board.width//self.board.scale-1)
+            self.y_pos = random.randint(0, self.board.height//self.board.scale-1)
             for element in self.snake.tail:
                 if element[0]==self.x_pos and element[1]==self.y_pos:
-                    continue
-            break
+                    valid = False
 
     def eaten(self):
         return self.snake.x_pos == self.x_pos and self.snake.y_pos == self.y_pos

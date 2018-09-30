@@ -56,8 +56,8 @@ while game_running:
         snake.place()
 
     if food.eaten():
-        snake.devour()
         food.place()
+        snake.devour()
 
     prev_x_speed = snake.x_speed
     prev_y_speed = snake.y_speed
